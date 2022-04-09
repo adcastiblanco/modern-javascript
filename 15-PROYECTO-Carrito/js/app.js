@@ -2,6 +2,7 @@ const coursesListContainer = document.querySelector("#lista-cursos");
 const cartProductsContainer = document.querySelector("#lista-carrito tbody");
 const cart = document.querySelector("#carrito");
 const removeAllButton = document.querySelector("#vaciar-carrito");
+const cartProductsNumber = document.querySelector("#cart-number");
 
 let cartProducts = [];
 
@@ -87,6 +88,7 @@ function printCartProducts() {
     <td><a href="#" class="borrar-curso" data-id="${id}">X</a></td>`;
     cartProductsContainer.appendChild(row);
   });
+  cartProductsNumber.textContent = cartProducts.length;
 }
 
 function cleanCart() {
