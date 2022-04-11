@@ -8,6 +8,10 @@ let cartProducts = [];
 
 callEventListeners();
 function callEventListeners() {
+  document.addEventListener("DOMContentLoaded", () => {
+    cartProducts = JSON.parse(localStorage.getItem("products")) || [];
+    printCartProducts();
+  });
   coursesListContainer.addEventListener("click", addToCart);
   cartProductsContainer.addEventListener("click", removeProduct);
   removeAllButton.addEventListener("click", () => {
@@ -77,23 +81,27 @@ function readCourse(course) {
 }
 
 function printCartProducts() {
+  localStorage.setItem("products", JSON.stringify(cartProducts));
   cleanCart();
 
-  cartProducts.forEach(({ id, image, name, price, quantity }) => {
-    let row = document.createElement("tr");
-    row.innerHTML = `<td><img src="${image}" width="100"></td>
-    <td>${name}</td>
-    <td>${price}</td>
-    <td>${quantity}</td>
-    <td><a href="#" class="borrar-curso" data-id="${id}">X</a></td>`;
-    cartProductsContainer.appendChild(row);
-  });
-  cartProductsNumber.textContent = cartProducts.length;
+  if (cartProducts.length > 0) {
+    cartProducts.forEach(({ id, image, name, price, quantity }) => {
+      let row = document.createElement("tr");
+      row.innerHTML = `<td><img src="${image}" width="100"></td>
+      <td>${name}</td>
+      <td>${price}</td>
+      <td>${quantity}</td>
+      <td><a href="#" class="borrar-curso" data-id="${id}">X</a></td>`;
+      cartProductsContainer.appendChild(row);
+    });
+    cartProductsNumber.textContent = cartProducts.length;
+  }
 }
 
 function cleanCart() {
-  //   while (cartProductsContainer.firstChild) {
-  //     cartProductsContainer.removeChild(cartProductsContainer.firstChild);
-  //   }
-  cartProductsContainer.innerHTML = "";
+  while (cartProductsContainer.firstChild) {
+    cartProductsContainer.removeChild(cartProductsContainer.firstChild);
+  }
+  localStorage.clear();
+  cartProductsNumber.textContent = cartProducts.length;
 }
